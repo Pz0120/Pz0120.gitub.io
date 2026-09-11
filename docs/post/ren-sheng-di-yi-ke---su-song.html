@@ -144,6 +144,32 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
 
 
 </script>
-<script>\n(function(){\n  var postBody=document.getElementById("postBody");\n  if(!postBody)return;\n  var text=postBody.innerText||"";\n  var count=text.replace(/\s/g,"").length;\n  var minutes=Math.ceil(count/400);\n  var div=document.createElement("div");\n  div.style.cssText="font-size:13px;color:#888;margin-top:24px;padding-top:12px;border-top:1px solid #eee;text-align:right;";\n  div.innerText="字数统计："+count+" 字 · 预计阅读："+minutes+" 分钟";\n  postBody.parentNode.insertBefore(div,postBody.nextSibling);\n  var btn=document.createElement("div");\n  btn.innerHTML="↑";\n  btn.style.cssText="position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;background:#333;color:#fff;font-size:22px;text-align:center;line-height:44px;cursor:pointer;opacity:0;transition:opacity .3s;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:999;user-select:none;";\n  btn.onmouseover=function(){btn.style.background="#555"};\n  btn.onmouseout=function(){btn.style.background="#333"};\n  btn.onclick=function(){window.scrollTo({top:0,behavior:"smooth"})};\n  document.body.appendChild(btn);\n  window.addEventListener("scroll",function(){btn.style.opacity=window.scrollY>300?"0.85":"0"});\n})();\n</script>
+<script>
+(function(){
+  var postBody=document.getElementById("postBody");
+  if(!postBody)return;
+  var text=postBody.innerText||"";
+  var count=text.replace(/\s/g,"").length;
+  var minutes=Math.ceil(count/400);
+  var div=document.createElement("div");
+  div.style.cssText="font-size:13px;color:#888;margin-top:24px;padding-top:12px;border-top:1px solid #eee;text-align:right;";
+  div.innerText="字数统计："+count+" 字 · 预计阅读："+minutes+" 分钟";
+  postBody.parentNode.insertBefore(div,postBody.nextSibling);
+  var hitokoto=document.createElement("div");
+  hitokoto.style.cssText="font-size:13px;color:#999;margin-top:16px;padding:12px 16px;background:#fafafa;border-left:3px solid #ddd;font-style:italic;text-align:center;";
+  hitokoto.innerText="加载中...";
+  div.parentNode.insertBefore(hitokoto,div.nextSibling);
+  fetch("https://v1.hitokoto.cn/?c=d&c=i&encode=json").then(function(r){return r.json()}).then(function(d){hitokoto.innerHTML="「 "+d.hitokoto+" 」"+(d.from?" —— "+d.from:"")}).catch(function(){hitokoto.innerHTML="「 在坚冰还盖着北海的时候，我看到了怒放的梅花 」"});
+  var btn=document.createElement("div");
+  btn.innerHTML="↑";
+  btn.style.cssText="position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;background:#333;color:#fff;font-size:22px;text-align:center;line-height:44px;cursor:pointer;opacity:0;transition:opacity .3s;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:999;user-select:none;";
+  btn.onmouseover=function(){btn.style.background="#555"};
+  btn.onmouseout=function(){btn.style.background="#333"};
+  btn.onclick=function(){window.scrollTo({top:0,behavior:"smooth"})};
+  document.body.appendChild(btn);
+  window.addEventListener("scroll",function(){btn.style.opacity=window.scrollY>300?"0.85":"0"});
+})();
+</script>
+
 
 </html>
