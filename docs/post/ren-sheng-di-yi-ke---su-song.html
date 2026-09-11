@@ -193,7 +193,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   statsCard.style.cssText="padding:16px 20px;background:linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);border-radius:10px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:12px;";
   statsCard.innerHTML='<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#e94560;">'+runDays+'</div><div style="font-size:11px;color:#888;margin-top:2px;">运行天数</div></div>'
     +'<div style="width:1px;height:30px;background:#ddd;"></div>'
-    +'<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#2ecc71;" id="pageViews">--</div><div style="font-size:11px;color:#888;margin-top:2px;">阅读次数</div></div>'
+    +'<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#2ecc71;"><span id="busuanzi_value_page_pv">--</span></div><div style="font-size:11px;color:#888;margin-top:2px;">阅读次数</div></div>'
     +'<div style="width:1px;height:30px;background:#ddd;"></div>'
     +'<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#3498db;">'+count+'</div><div style="font-size:11px;color:#888;margin-top:2px;">字数</div></div>';
   postBody.appendChild(statsCard);
@@ -202,15 +202,9 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   if(!window.busuanziLoaded){
     window.busuanziLoaded=true;
     var bszScript=document.createElement("script");
-    bszScript.src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    bszScript.src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
     bszScript.async=true;
     document.body.appendChild(bszScript);
-    setInterval(function(){
-      var val=document.getElementById("busuanzi_value_page_pv");
-      if(val&&val.innerText!=="..."&&val.innerText!==""){
-        document.getElementById("pageViews").innerText=val.innerText;
-      }
-    },1000);
   }
   
   // 图片灯箱
