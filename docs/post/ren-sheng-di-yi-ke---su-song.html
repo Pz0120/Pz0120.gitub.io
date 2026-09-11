@@ -177,10 +177,19 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     }).catch(function(){});
   }
   fetch("https://v1.hitokoto.cn/?c=d&c=i&encode=json").then(function(r){return r.json()}).then(function(d){hitokoto.innerHTML="「 "+d.hitokoto+" 」<br><span style='font-size:12px;color:#aaa;'>"+(d.from?"—— "+d.from:"")+"</span>"}).catch(function(){hitokoto.innerHTML="「 在坚冰还盖着北海的时候，我看到了怒放的梅花 」"});
-  var musicDiv=document.createElement("div");
-  musicDiv.style.cssText="margin:24px 0;";
-  musicDiv.innerHTML='<meting-js server="netease" type="playlist" id="749947383" theme="#2980b9" preload="auto" order="list"></meting-js>';
-  postBody.parentNode.insertBefore(musicDiv,postBody.nextSibling);
+  function initMusicPlayer(){
+    var musicDiv=document.createElement("div");
+    musicDiv.style.cssText="margin:24px 0;";
+    var meting=document.createElement("meting-js");
+    meting.setAttribute("server","netease");
+    meting.setAttribute("type","playlist");
+    meting.setAttribute("id","749947383");
+    meting.setAttribute("theme","#2980b9");
+    meting.setAttribute("preload","auto");
+    meting.setAttribute("order","list");
+    musicDiv.appendChild(meting);
+    postBody.parentNode.insertBefore(musicDiv,postBody.nextSibling);
+  }
   if(!window.metingJsLoaded){
     window.metingJsLoaded=true;
     var link=document.createElement("link");
@@ -192,9 +201,12 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     script1.onload=function(){
       var script2=document.createElement("script");
       script2.src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js";
+      script2.onload=initMusicPlayer;
       document.body.appendChild(script2);
     };
     document.body.appendChild(script1);
+  }else{
+    initMusicPlayer();
   }
   var btn=document.createElement("div");
   btn.innerHTML="↑";
