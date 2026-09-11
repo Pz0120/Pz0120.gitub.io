@@ -152,7 +152,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   var text=postBody.innerText||"";
   var count=text.replace(/\s/g,"").length;
   var minutes=Math.ceil(count/400);
-  
   var issueMatch=window.location.pathname.match(/post\/(.+)\.html$/);
   if(issueMatch){
     var postListJsonUrl="https://raw.githubusercontent.com/Pz0120/pz0120.github.io/main/docs/postList.json";
@@ -167,7 +166,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
       }
     }).catch(function(){});}
   
-  // 1. 滚动揭示
+  // 滚动揭示
   var style=document.createElement("style");
   style.textContent='.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease;}.reveal.visible{opacity:1;transform:translateY(0);}';
   document.head.appendChild(style);
@@ -176,45 +175,45 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1});
   elements.forEach(function(el){observer.observe(el);});
   
-  // 2. 动态签名
+  // 动态签名（横线上方）
   var signature=document.createElement("div");
-  signature.style.cssText="margin-top:32px;padding:20px 0;border-top:1px solid #eee;text-align:right;";
+  signature.style.cssText="margin-top:32px;text-align:right;";
   signature.innerHTML='<div style="font-family:Georgia,serif;font-size:16px;color:#666;font-style:italic;">—— Pz</div><div style="font-size:12px;color:#aaa;margin-top:4px;">写于 <span id="sigDate">--</span></div>';
   postBody.appendChild(signature);
   
-  // 3. 统计信息卡片
+  // 分隔线
+  var divider=document.createElement("div");
+  divider.style.cssText="height:1px;background:linear-gradient(90deg,transparent,#ddd,transparent);margin:16px 0;";
+  postBody.appendChild(divider);
+  
+  // 统计信息卡片（横线下方）
   var startDate=new Date("2026-09-08");
   var runDays=Math.floor((new Date()-startDate)/(1000*60*60*24));
   var statsCard=document.createElement("div");
-  statsCard.style.cssText="margin:24px 0;padding:16px 20px;background:linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);border-radius:10px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:12px;";
-  statsCard.innerHTML='<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#e94560;" id="runDays">'+runDays+'</div><div style="font-size:11px;color:#888;margin-top:2px;">运行天数</div></div>'
+  statsCard.style.cssText="padding:16px 20px;background:linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);border-radius:10px;display:flex;justify-content:space-around;align-items:center;flex-wrap:wrap;gap:12px;";
+  statsCard.innerHTML='<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#e94560;">'+runDays+'</div><div style="font-size:11px;color:#888;margin-top:2px;">运行天数</div></div>'
     +'<div style="width:1px;height:30px;background:#ddd;"></div>'
     +'<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#2ecc71;" id="pageViews">--</div><div style="font-size:11px;color:#888;margin-top:2px;">阅读次数</div></div>'
     +'<div style="width:1px;height:30px;background:#ddd;"></div>'
     +'<div style="text-align:center;flex:1;min-width:80px;"><div style="font-size:20px;font-weight:700;color:#3498db;">'+count+'</div><div style="font-size:11px;color:#888;margin-top:2px;">字数</div></div>';
   postBody.appendChild(statsCard);
   
+  // 不蒜子计数
   if(!window.busuanziLoaded){
-    window.busanziLoaded=true;
+    window.busuanziLoaded=true;
     var bszScript=document.createElement("script");
     bszScript.src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
     bszScript.async=true;
-    bszScript.onload=function(){
-      var pv=document.getElementById("busuanzi_value_page_pv");
-      if(pv){
-        varobserver2=setInterval(function(){
-          var val=document.getElementById("busuanzi_value_page_pv");
-          if(val&&val.innerText!=="..."){
-            document.getElementById("pageViews").innerText=val.innerText;
-            clearInterval(varobserver2);
-          }
-        },500);
-      }
-    };
     document.body.appendChild(bszScript);
+    setInterval(function(){
+      var val=document.getElementById("busuanzi_value_page_pv");
+      if(val&&val.innerText!=="..."&&val.innerText!==""){
+        document.getElementById("pageViews").innerText=val.innerText;
+      }
+    },1000);
   }
   
-  // 4. 图片灯箱
+  // 图片灯箱
   var imgs=postBody.querySelectorAll('img');
   imgs.forEach(function(img){img.style.cursor="pointer";img.onclick=function(){openLightbox(img.src);}});
   function openLightbox(src){
