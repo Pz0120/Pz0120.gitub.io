@@ -167,6 +167,8 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
           var createdDate=postList[key].createdDate||"--";
           var el=document.getElementById("publishDate");
           if(el)el.innerText="发布于 "+createdDate;
+          var sigEl=document.getElementById("sigDate");
+          if(sigEl)sigEl.innerText=createdDate;
           break;
         }
       }
@@ -182,14 +184,11 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1});
   elements.forEach(function(el){observer.observe(el);});
   
-  // 2. 动态签名
+  // 2. 动态签名（使用文章发布时间）
   var signature=document.createElement("div");
   signature.style.cssText="margin-top:32px;padding:20px 0;border-top:1px solid #eee;text-align:right;";
-  signature.innerHTML='<div style="font-family:Georgia,serif;font-size:16px;color:#666;font-style:italic;">—— Pz</div><div style="font-size:12px;color:#aaa;margin-top:4px;">写于 <span id="sigDate"></span></div>';
+  signature.innerHTML='<div style="font-family:Georgia,serif;font-size:16px;color:#666;font-style:italic;">—— Pz</div><div style="font-size:12px;color:#aaa;margin-top:4px;">写于 <span id="sigDate">--</span></div>';
   postBody.appendChild(signature);
-  var now=new Date();
-  var sigEl=document.getElementById("sigDate");
-  if(sigEl)sigEl.innerText=now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日";
   
   // 3. 网站运行时间
   var startDate=new Date("2026-09-08");
