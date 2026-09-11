@@ -159,9 +159,9 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     postTitle.parentNode.insertBefore(metaDiv,postTitle.nextSibling);
   }
   var hitokoto=document.createElement("div");
-  hitokoto.style.cssText="font-size:14px;color:#777;margin:20px 0;padding:14px 18px;background:#f9f9f9;border-left:3px solid #ccc;font-style:italic;text-align:center;";
+  hitokoto.style.cssText="font-size:14px;color:#777;margin:24px 0 20px;padding:14px 18px;background:#f9f9f9;border-left:3px solid #ccc;font-style:italic;text-align:center;";
   hitokoto.innerText="加载中...";
-  postBody.parentNode.insertBefore(hitokoto,postBody.nextSibling);
+  postBody.parentNode.insertBefore(hitokoto,postBody);
   var issueMatch=window.location.pathname.match(/post\/(.+)\.html$/);
   if(issueMatch){
     var postListJsonUrl="https://raw.githubusercontent.com/Pz0120/pz0120.github.io/main/docs/postList.json";
