@@ -177,16 +177,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     }).catch(function(){});
   }
   fetch("https://v1.hitokoto.cn/?c=d&c=i&encode=json").then(function(r){return r.json()}).then(function(d){hitokoto.innerHTML="「 "+d.hitokoto+" 」<br><span style='font-size:12px;color:#aaa;'>"+(d.from?"—— "+d.from:"")+"</span>"}).catch(function(){hitokoto.innerHTML="「 在坚冰还盖着北海的时候，我看到了怒放的梅花 」"});
-  var musicDiv=document.createElement("div");
-  musicDiv.style.cssText="margin:24px 0;";
-  musicDiv.innerHTML='<xf-music-player language="zh" theme="xf-original-theme" mode="local" playlist=\'[{"id":"local-1","title":"交给时间斑驳","artist":"供销社乐队","src":"https://pz0120.github.io/docs/music/供销社乐队-交给时间斑驳.mp3"}]\' remember-playback="true" play-mode="order" volume="0.8"></xf-music-player>';
-  postBody.parentNode.insertBefore(musicDiv,postBody.nextSibling);
-  if(!window.xfMusicLoaded){
-    window.xfMusicLoaded=true;
-    var script=document.createElement("script");
-    script.src="https://player.xfyun.club/js/music-player/music-player.min.js";
-    document.body.appendChild(script);
-  }
   var btn=document.createElement("div");
   btn.innerHTML="↑";
   btn.title="回到顶部";
