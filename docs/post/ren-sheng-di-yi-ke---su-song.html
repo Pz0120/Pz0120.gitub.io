@@ -156,11 +156,13 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     var dateDiv=document.createElement("div");
     dateDiv.className="postDate";
     dateDiv.style.cssText="font-size:13px;color:#aaa;font-weight:normal;margin-top:8px;";
-    var now=new Date();
-    var dateStr=now.getFullYear()+"-"+(now.getMonth()+1).toString().padStart(2,"0")+"-"+now.getDate().toString().padStart(2,"0");
-    dateDiv.innerText="发布于 "+dateStr;
+    dateDiv.innerText="发布于 --";
     postTitle.appendChild(dateDiv);
   }
+  var historyDiv=document.createElement("div");
+  historyDiv.style.cssText="margin-top:16px;padding:14px 18px;background:#f6f8fa;border-radius:6px;font-size:13px;color:#555;line-height:1.8;";
+  historyDiv.innerHTML="<div style='color:#888;margin-bottom:8px;'>加载中...</div>";
+  postBody.parentNode.insertBefore(historyDiv,postBody.nextSibling);
   var div=document.createElement("div");
   div.style.cssText="font-size:13px;color:#888;margin-top:24px;padding-top:12px;border-top:1px solid #eee;text-align:right;";
   div.innerText="字数统计："+count+" 字 · 预计阅读："+minutes+" 分钟";
@@ -170,6 +172,47 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   hitokoto.innerText="加载中...";
   div.parentNode.insertBefore(hitokoto,div.nextSibling);
   fetch("https://v1.hitokoto.cn/?c=d&c=i&encode=json").then(function(r){return r.json()}).then(function(d){hitokoto.innerHTML="「 "+d.hitokoto+" 」"+(d.from?" —— "+d.from:"")}).catch(function(){hitokoto.innerHTML="「 在坚冰还盖着北海的时候，我看到了怒放的梅花 」"});
+  var issueMatch=window.location.pathname.match(/post\/(.+)\.html$/);
+  if(issueMatch){
+    var postListJsonUrl="https://raw.githubusercontent.com/Pz0120/pz0120.github.io/main/docs/postList.json";
+    fetch(postListJsonUrl).then(function(r){return r.json()}).then(function(postList){
+      var postData=null;
+      for(var key in postList){
+        if(postList[key].postUrl==="post/"+issueMatch[1]+".html"){
+          postData=postList[key];
+          break;
+        }
+      }
+      if(postData){
+        if(postTitle && postTitle.querySelector(".postDate")){
+          var createdDate=postData.createdDate||"--";
+          postTitle.querySelector(".postDate").innerText="发布于 "+createdDate;
+        }
+        if(postData.postSourceUrl){
+          var repoMatch=postData.postSourceUrl.match(/github\.com\/([^\/]+\/[^\/]+)\/issues\/(\d+)/);
+          if(repoMatch){
+            var apiUrl="https://api.github.com/repos/"+repoMatch[1]+"/issues/"+repoMatch[2]+"/events?per_page=100";
+            fetch(apiUrl).then(function(r){return r.json()}).then(function(events){
+              if(!Array.isArray(events)){historyDiv.innerHTML="<div style='color:#888;'>暂无编辑记录</div>";return;}
+              var edits=events.filter(function(e){return e.event==="edited"});
+              var created=events.filter(function(e){return e.event==="opened"});
+              var createdTime=created.length>0?new Date(created[0].created_at):null;
+              var html="<div style='font-weight:600;color:#333;margin-bottom:8px;'>📝 编辑记录</div>";
+              html+="<div>🕐 首次发布："+(createdTime?createdTime.toLocaleDateString("zh-CN"):"--")+"</div>";
+              if(edits.length>0){
+                var lastEdit=new Date(edits[edits.length-1].created_at);
+                html+="<div>✏️ 最后编辑："+lastEdit.toLocaleDateString("zh-CN")+" "+lastEdit.toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit"})+"</div>";
+                html+="<div>📊 编辑次数："+edits.length+" 次</div>";
+              }else{
+                html+="<div style='color:#888;'>本文尚未编辑过</div>";
+              }
+              historyDiv.innerHTML(html;
+            }).catch(function(){historyDiv.innerHTML="<div style='color:#888;'>无法加载编辑记录</div>"});
+          }
+        }
+      }
+    }).catch(function(){});
+  }
   var btn=document.createElement("div");
   btn.innerHTML="↑";
   btn.style.cssText="position:fixed;right:24px;bottom:24px;width:44px;height:44px;border-radius:50%;background:#333;color:#fff;font-size:22px;text-align:center;line-height:44px;cursor:pointer;opacity:0;transition:opacity .3s;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:999;user-select:none;";
