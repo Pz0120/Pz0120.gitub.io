@@ -51,9 +51,7 @@ jobs:
           cp -r ./* /opt/Gmeek/
           cd /opt/Gmeek/
           python Gmeek.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
-          if [ -d ${{ github.workspace }}/docs/music ]; then cp -r ${{ github.workspace }}/docs/music /tmp/music_backup; fi
-          cp -a /opt/Gmeek/docs ${{ github.workspace }}
-          if [ -d /tmp/music_backup ]; then cp -r /tmp/music_backup ${{ github.workspace }}/docs/music; rm -rf /tmp/music_backup; fi 
+          cp -a /opt/Gmeek/docs ${{ github.workspace }} 
           cp -a /opt/Gmeek/backup ${{ github.workspace }} 
           cp /opt/Gmeek/blogBase.json ${{ github.workspace }} 
           
