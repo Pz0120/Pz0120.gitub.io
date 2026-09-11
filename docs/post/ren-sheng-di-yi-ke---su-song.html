@@ -152,12 +152,7 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   var text=postBody.innerText||"";
   var count=text.replace(/\s/g,"").length;
   var minutes=Math.ceil(count/400);
-  if(postTitle){
-    var metaDiv=document.createElement("div");
-    metaDiv.style.cssText="font-size:13px;color:#999;font-weight:normal;margin-top:10px;padding-bottom:16px;border-bottom:1px solid #eee;";
-    metaDiv.innerHTML="<span id='publishDate'>发布于 --</span><span style='margin:0 12px;'>·</span><span>字数："+count+" 字</span><span style='margin:0 12px;'>·</span><span>阅读：约 "+minutes+" 分钟</span>";
-    postTitle.parentNode.insertBefore(metaDiv,postTitle.nextSibling);
-  }
+  
   var issueMatch=window.location.pathname.match(/post\/(.+)\.html$/);
   if(issueMatch){
     var postListJsonUrl="https://raw.githubusercontent.com/Pz0120/pz0120.github.io/main/docs/postList.json";
@@ -165,8 +160,6 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
       for(var key in postList){
         if(postList[key].postUrl==="post/"+issueMatch[1]+".html"){
           var createdDate=postList[key].createdDate||"--";
-          var el=document.getElementById("publishDate");
-          if(el)el.innerText="发布于 "+createdDate;
           var sigEl=document.getElementById("sigDate");
           if(sigEl)sigEl.innerText=createdDate;
           break;
