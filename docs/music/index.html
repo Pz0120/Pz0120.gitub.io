@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Pz的日记 - 音乐播放器">
+  <meta property="og:title" content="Pz的日记 - 音乐">
+  <meta property="og:description" content="Pz的日记音乐播放器">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://pz0120.github.io/music/">
+  <meta property="og:image" content="" />
+  <link rel="icon" href="https://avatars.githubusercontent.com/u/74855623?v=4&size=64">
+  <title>音乐 - Pz的日记</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Meekdai/Gmemp@v3.4.8/docs/player.css">
+</head>
+<body>
+  <div id="title">
+    <span id="track"></span>
+    <div id="artist"></div>
+    <div id="timer">0:00</div>
+    <div id="duration">0:00</div>
+    <div id="post" style="display:none;"></div>
+  </div>
+  
+  <div class="controlsOuter">
+    <div class="controlsInner">
+      <div id="loading"></div>
+      <div class="btn" id="playBtn"></div>
+      <div class="btn" id="pauseBtn"></div>
+      <div class="btn" id="prevBtn"></div>
+      <div class="btn" id="nextBtn"></div>
+    </div>
+    <div class="btn" id="playlistBtn"></div>
+    <div class="btn" id="postBtn"></div>
+    <div class="btn" id="waveBtn"></div>
+    <div class="btn" id="volumeBtn"></div>
+  </div>
+
+  <div id="progressBar"></div>
+  <div id="progress"></div>
+  <canvas id="waveCanvas"></canvas>
+
+  <div id="playlist">
+    <div id="list"></div>
+  </div>
+
+  <div id="volume" class="fadeout">
+    <div id="barFull" class="bar"></div>
+    <div id="barEmpty" class="bar"></div>
+    <div id="sliderBtn"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/Meekdai/Gmemp@v3.4.8/docs/player.js"></script>
+</body>
+</html>
