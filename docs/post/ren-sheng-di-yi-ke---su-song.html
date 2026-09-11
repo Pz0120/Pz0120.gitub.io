@@ -151,6 +151,16 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
   var text=postBody.innerText||"";
   var count=text.replace(/\s/g,"").length;
   var minutes=Math.ceil(count/400);
+  var postTitle=document.querySelector(".postTitle");
+  if(postTitle && !postTitle.querySelector(".postDate")){
+    var dateDiv=document.createElement("div");
+    dateDiv.className="postDate";
+    dateDiv.style.cssText="font-size:13px;color:#aaa;font-weight:normal;margin-top:8px;";
+    var now=new Date();
+    var dateStr=now.getFullYear()+"-"+(now.getMonth()+1).toString().padStart(2,"0")+"-"+now.getDate().toString().padStart(2,"0");
+    dateDiv.innerText="发布于 "+dateStr;
+    postTitle.appendChild(dateDiv);
+  }
   var div=document.createElement("div");
   div.style.cssText="font-size:13px;color:#888;margin-top:24px;padding-top:12px;border-top:1px solid #eee;text-align:right;";
   div.innerText="字数统计："+count+" 字 · 预计阅读："+minutes+" 分钟";
