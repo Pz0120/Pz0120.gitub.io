@@ -177,6 +177,59 @@ document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
     }).catch(function(){});
   }
   fetch("https://v1.hitokoto.cn/?c=d&c=i&encode=json").then(function(r){return r.json()}).then(function(d){hitokoto.innerHTML="「 "+d.hitokoto+" 」<br><span style='font-size:12px;color:#aaa;'>"+(d.from?"—— "+d.from:"")+"</span>"}).catch(function(){hitokoto.innerHTML="「 在坚冰还盖着北海的时候，我看到了怒放的梅花 」"});
+  
+  // 1. 滚动揭示
+  var style=document.createElement("style");
+  style.textContent='.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease;}.reveal.visible{opacity:1;transform:translateY(0);}';
+  document.head.appendChild(style);
+  var elements=postBody.querySelectorAll('p, h2, h3, blockquote, ul, ol, table, img');
+  elements.forEach(function(el,i){el.classList.add('reveal');el.style.transitionDelay=(Math.min(i*0.05,0.5))+'s';});
+  var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1});
+  elements.forEach(function(el){observer.observe(el);});
+  
+  // 2. 动态签名
+  var signature=document.createElement("div");
+  signature.style.cssText="margin-top:32px;padding:20px 0;border-top:1px solid #eee;text-align:right;";
+  signature.innerHTML='<div style="font-family:Georgia,serif;font-size:16px;color:#666;font-style:italic;">—— Pz</div><div style="font-size:12px;color:#aaa;margin-top:4px;">写于 <span id="sigDate"></span></div>';
+  postBody.appendChild(signature);
+  var now=new Date();
+  var sigEl=document.getElementById("sigDate");
+  if(sigEl)sigEl.innerText=now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日";
+  
+  // 3. 网站运行时间
+  var startDate=new Date("2026-09-08");
+  var runDays=Math.floor((new Date()-startDate)/(1000*60*60*24));
+  var runtime=document.createElement("div");
+  runtime.style.cssText="font-size:12px;color:#aaa;margin-top:8px;";
+  runtime.innerText="网站运行 "+runDays+" 天";
+  hitokoto.appendChild(runtime);
+  
+  // 4. 不蒜子计数
+  var busuanzi=document.createElement("div");
+  busuanzi.style.cssText="font-size:12px;color:#aaa;margin-top:6px;";
+  busuanzi.innerHTML='阅读：<span id="busuanzi_value_page_pv" style="color:#e94560;">...</span> 次';
+  hitokoto.appendChild(busuanzi);
+  if(!window.busuanziLoaded){
+    window.busuanziLoaded=true;
+    var bszScript=document.createElement("script");
+    bszScript.src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+    bszScript.async=true;
+    document.body.appendChild(bszScript);
+  }
+  
+  // 5. 图片灯箱
+  var imgs=postBody.querySelectorAll('img');
+  imgs.forEach(function(img){img.style.cursor="pointer";img.onclick=function(){openLightbox(img.src);}});
+  function openLightbox(src){
+    var overlay=document.createElement("div");
+    overlay.id="lightboxOverlay";
+    overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;";
+    overlay.innerHTML='<img src="'+src+'" style="max-width:90%;max-height:90%;object-fit:contain;border-radius:4px;">';
+    overlay.onclick=function(){document.body.removeChild(overlay);};
+    document.body.appendChild(overlay);
+    document.addEventListener("keydown",function esc(e){if(e.key==="Escape"){var lb=document.getElementById("lightboxOverlay");if(lb)document.body.removeChild(lb);document.removeEventListener("keydown",esc);}});
+  }
+  
   var btn=document.createElement("div");
   btn.innerHTML="↑";
   btn.title="回到顶部";
